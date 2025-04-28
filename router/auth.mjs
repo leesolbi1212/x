@@ -1,19 +1,22 @@
 import express from "express";
 import * as authController from "../controller/auth.mjs";
+
 import { body } from "express-validator";
 import { validate } from "../middleware/validator.mjs";
 
 const router = express.Router();
 
 const validateLogin = [
-  body("userid")
-    .trim()
+  body("userid") // body에서 userid 가져오고
+    .trim() // trim으로 양옆 제거해주고..
     .isLength({ min: 4 })
-    .withMessage("최소 4자이상 입력")
-    .matches(/^[a-zA-Z0-9]*$/)
-    .withMessage("특수문자는 사용불가"),
+    .withMessage("최소 4자이상 입력") // isLength가 4자 미만일때 출력하는 메세지
+    .matches(/^[a-zA-Z0-9]*$/) // isLength 만족시 넘어오는 조건
+    .withMessage("특수문자는 사용불가"), // maches 만족 못할때 출력하는 메세지
+
   body("password").trim().isLength({ min: 8 }).withMessage("최소 8자이상 입력"),
-  validate,
+
+  validate, // 미들웨어 validate 함수주소 참조. 실행하게 함.
 ];
 
 const validateSignup = [
@@ -23,13 +26,10 @@ const validateSignup = [
   validate,
 ];
 
-// 회원가입
-// POST
+// 회원가입: post
 // http://127.0.0.1:8080/auth/signup
-router.post("/signup", validateSignup, authController.signup);
-
-// 로그인
-// POST
+router.post("/signup", validateSignup, authController.newSignUp);
+// 로그인 : post
 // http://127.0.0.1:8080/auth/login
 router.post("/login", validateLogin, authController.login);
 

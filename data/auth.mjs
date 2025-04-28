@@ -41,22 +41,34 @@ let users = [
   },
 ];
 
-export async function createUser(userid, password, name, email) {
+// 회원가입 : 배열에 객체 추가
+export async function singUp(userid, password, name, email) {
   const user = {
     id: Date.now().toString(),
     userid,
     password,
     name,
     email,
-    url: "https://randomuser.me/api/portraits/men/29.jpg",
   };
   users = [user, ...users];
   return users;
 }
 
+// 로그인 : 아이디 패스워드 가진 사람 있으면 로그인
+// 로그인
 export async function login(userid, password) {
   const user = users.find(
     (user) => user.userid === userid && user.password === password
   );
   return user;
+}
+
+//
+export async function findByUserid(userid) {
+  const user = users.find((user) => user.userid === userid);
+  return user;
+}
+
+export async function findByid(id) {
+  return users.find((user) => user.id === id);
 }
